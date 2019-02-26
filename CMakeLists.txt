@@ -13,3 +13,9 @@ set( VTP_APP_SOURCES
 )
 
 add_executable( ${PROJECT_NAME} ${VTP_APP_SOURCES})
+
+include(CTest) #adds option BUILD_TESTING (default ON)
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(test)
+endif()
