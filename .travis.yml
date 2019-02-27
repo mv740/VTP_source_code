@@ -14,8 +14,7 @@ addons:
 compiler: clang
 
 env:
-  - CMAKE_CXX_COMPILER=clang++-7
-  - CMAKE_C_COMPILER=clang-7
+  - CMAKE_CXX_COMPILER=clang++-7 CMAKE_C_COMPILER=clang-7
 
 before_install:
     - export CXX=${CMAKE_CXX_COMPILER}
