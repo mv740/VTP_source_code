@@ -14,16 +14,20 @@ addons:
 compiler: clang
 
 env:
-  - CXX_COMPILER=clang++-7
-  - C_COMPILER=clang-7
+  - CMAKE_CXX_COMPILER=clang++-7
+  - CMAKE_C_COMPILER=clang-7
+
+before_install:
+    - export CXX=${CMAKE_CXX_COMPILER}
+    - export CC=${CMAKE_C_COMPILER}
 
 
 #script to run before build
 before_script:
-  - export CXX=${CXX_COMPILER}
-  - export CC=${C_COMPILER}
   - mkdir build
   - cd build
+  - $CXX --version
+  - $CC --version
   - cmake -DBUILD_TESTING=ON ..
 
 # build app, and run tests (ie make & make test)
