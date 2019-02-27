@@ -145,7 +145,7 @@ namespace geodesic {
 		double top_y = L * sin(Tri.left_alpha);
 
 		Vertex top_t; // temporary top_vertex
-		memcpy(&top_t, Tri.top_vertex, sizeof(Vertex));
+		std::memcpy(&top_t, Tri.top_vertex, sizeof(Vertex));
 		top_t.geodesic_distance() = GEODESIC_INF;
 
 		interval_pointer iter = list->begin();
@@ -199,7 +199,7 @@ namespace geodesic {
 		if (top_t.geodesic_distance() < Tri.top_vertex->geodesic_distance())
 		{
 			if (Tri.top_vertex->state() == Vertex::FRONT) erase_from_queue(Tri.top_vertex);
-			memcpy(Tri.top_vertex, &top_t, sizeof(Vertex));
+			std::memcpy(Tri.top_vertex, &top_t, sizeof(Vertex));
 			if (Tri.top_vertex->state() == Vertex::FRONT) m_vertex_queue.insert(Tri.top_vertex);
 
 			if ((Tri.top_vertex->state() == Vertex::INSIDE) && (Tri.top_vertex->saddle_or_boundary()))
@@ -332,7 +332,7 @@ namespace geodesic {
 
 			case PropagationDirection:: BOTH:
 				right_w = new Interval;
-				memcpy(right_w, w, sizeof(Interval));
+				std::memcpy(right_w, w, sizeof(Interval));
 
 				ValidPropagation = compute_propagated_parameters(w->pseudo_x(),
 					w->pseudo_y(),
