@@ -11,6 +11,8 @@ addons:
       - clang-7
       - cmake
 
+compiler: clang
+
 #script to run before build
 before_script:
   - mkdir build
