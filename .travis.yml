@@ -1,0 +1,23 @@
+language: cpp
+dist: trusty
+
+addons:
+  apt:
+    sources:
+    # Clang 7:
+      - llvm-toolchain-trusty-7
+      - ubuntu-toolchain-r-test
+    packages:
+      - clang-7
+      - cmake
+
+#script to run before build
+before_script:
+  - mkdir build
+  - cd build
+  - cmake -DBUILD_TESTING=ON ..
+
+# build app, and run tests (ie make & make test)
+script: 
+  - cmake --build .
+  - ctest --verbose
