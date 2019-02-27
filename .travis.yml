@@ -13,8 +13,13 @@ addons:
 
 compiler: clang
 
+env:
+  - CXX_COMPILER=clang++-7
+
+
 #script to run before build
 before_script:
+  - export CXX=${CXX_COMPILER}
   - mkdir build
   - cd build
   - cmake -DBUILD_TESTING=ON ..
