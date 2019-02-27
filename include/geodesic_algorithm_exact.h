@@ -154,7 +154,7 @@ namespace geodesic {
 		double wlist_pseudo_x = 0;
 		double wlist_pseudo_y = 0;
 
-		while (iter != NULL)
+		while (iter != nullptr)
 		{
 			interval_pointer &w = iter;
 
@@ -227,7 +227,7 @@ namespace geodesic {
 
 		PropagationDirection direction;
 
-		while (!list->empty() && (iter != NULL))
+		while (!list->empty() && (iter != nullptr))
 		{
 			interval_pointer &w = iter;
 			assert(w->start() <= w->stop());
@@ -401,7 +401,7 @@ namespace geodesic {
 		interval_pointer iter = list->begin();
 		interval_pointer iter_t;
 
-		while ((!list->empty()) && (iter != NULL))
+		while ((!list->empty()) && (iter != nullptr))
 		{
 			interval_pointer &w = iter;
 			bool w_survive = true;
@@ -584,7 +584,7 @@ namespace geodesic {
 		next = iter->next();
 
 		// traverse successive pairs of windows
-		while ((!list->empty()) && (next != NULL))
+		while ((!list->empty()) && (next != nullptr))
 		{
 			windows_state ws = check_between_two_windows(iter, next);
 
@@ -679,7 +679,7 @@ namespace geodesic {
 			for (unsigned i = 0; i < vert->adjacent_faces().size(); ++i)
 			{
 				edge_pointer   edge_it = vert->adjacent_faces()[i]->opposite_edge(vert);
-				vertex_pointer vert_it = (edge_it->adjacent_faces().size() < 2) ? NULL : edge_it->opposite_face(vert->adjacent_faces()[i])->opposite_vertex(edge_it);
+				vertex_pointer vert_it = (edge_it->adjacent_faces().size() < 2) ? nullptr : edge_it->opposite_face(vert->adjacent_faces()[i])->opposite_vertex(edge_it);
 				if (edge_it->adjacent_faces().size() < 2 || vert_it->state() != Vertex::OUTSIDE)
 				{
 					if (!interval_list_0(edge_it)->empty()) m_list_queue.push(interval_list_0(edge_it));

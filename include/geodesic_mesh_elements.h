@@ -29,7 +29,7 @@ class SimpleVector			//for efficiency, it uses an outside memory allocator
 public:
 	SimpleVector():
 	  m_size(0),
-	  m_begin(NULL)
+	  m_begin(nullptr)
 	{};
 
 	typedef Data* iterator;
@@ -180,7 +180,7 @@ public:
 		m_type = VERTEX;
 		m_geodesic_distance = geodesic::GEODESIC_INF;  // Initialize Distance
 		m_state = OUTSIDE;
-		m_incident_face = NULL;
+		m_incident_face = nullptr;
 		m_saddle_or_boundary = false;
 		m_incident_point = NULL; 
 	};
@@ -264,7 +264,7 @@ public:
 		if(adjacent_faces().size() == 1)
 		{
 			assert(adjacent_faces()[0]->id() == f->id());
-			return NULL;
+			return nullptr;
 		}
 
 		assert(adjacent_faces()[0]->id() == f->id() || 
@@ -326,7 +326,7 @@ class SurfacePoint:public Point3D  //point on the surface of the mesh
 {
 public:
 	SurfacePoint():
-		m_p(NULL)
+		m_p(nullptr)
 	{};
 
 	SurfacePoint(vertex_pointer v):		//set the surface point in the vertex
@@ -394,7 +394,7 @@ inline edge_pointer Face::opposite_edge(vertex_pointer v)
 		}
 	}
 	assert(0);
-	return NULL;
+	return nullptr;
 }
 
 inline vertex_pointer Face::opposite_vertex(edge_pointer e)
@@ -408,7 +408,7 @@ inline vertex_pointer Face::opposite_vertex(edge_pointer e)
 		}
 	}
 	assert(0);
-	return NULL;
+	return nullptr;
 }
 
 inline edge_pointer Face::next_edge(edge_pointer e, vertex_pointer v)
@@ -424,7 +424,7 @@ inline edge_pointer Face::next_edge(edge_pointer e, vertex_pointer v)
 		}
 	}
 	assert(0);
-	return NULL;
+	return nullptr;
 }
 
 // HalfEdge operations

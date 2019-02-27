@@ -70,10 +70,10 @@ namespace geodesic {
 	class IntervalList						//list of the of intervals of the given edge
 	{
 	public:
-		IntervalList() {  m_start = NULL; m_edge = NULL; m_sp = -1; m_begin = m_end = NULL; }
+		IntervalList() {  m_start = nullptr; m_edge = nullptr; m_sp = -1; m_begin = m_end = nullptr; }
 		~IntervalList() {};
 
-		void clear() { m_begin = m_end = NULL; }
+		void clear() { m_begin = m_end = nullptr; }
 		void initialize(edge_pointer e) { m_edge = e; }
 
 		vertex_pointer& start_vertex() { return m_start; }
@@ -89,19 +89,19 @@ namespace geodesic {
 
 		interval_pointer& end() { return m_end; }
 
-		bool empty() { return m_begin == NULL; }
+		bool empty() { return m_begin == nullptr; }
 
 		void push_back(interval_pointer & w)
 		{
 			if (!m_end)
 			{
-				w->previous() = NULL;
-				w->next() = NULL;
+				w->previous() = nullptr;
+				w->next() = nullptr;
 				m_begin = m_end = w;
 			}
 			else
 			{
-				w->next() = NULL;
+				w->next() = nullptr;
 				w->previous() = m_end;
 				m_end->next() = w;
 				m_end = w;
@@ -112,17 +112,17 @@ namespace geodesic {
 		{
 			if ((w == m_begin) && (w == m_end))
 			{
-				m_begin = m_end = NULL;
+				m_begin = m_end = nullptr;
 			}
 			else if (w == m_begin)
 			{
 				m_begin = m_begin->next();
-				m_begin->previous() = NULL;
+				m_begin->previous() = nullptr;
 			}
 			else if (w == m_end)
 			{
 				m_end = m_end->previous();
-				m_end->next() = NULL;
+				m_end->next() = nullptr;
 			}
 			else
 			{
