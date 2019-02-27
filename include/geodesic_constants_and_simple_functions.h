@@ -77,7 +77,7 @@ inline bool read_mesh_from_file(char* filename,
 				int oldSize = mapForDuplicate.size();
 				realIndex.push_back(oldSize);
 				mapForDuplicate[curLine] = oldSize;
-				sscanf_s(curLine.c_str(), "v %lf %lf %lf", &coord[0], &coord[1], &coord[2]);
+				sscanf(curLine.c_str(), "v %lf %lf %lf", &coord[0], &coord[1], &coord[2]);
 				for (int i = 0;i < 3;++i) points.push_back(coord[i]);
 			}
 			else
@@ -90,9 +90,9 @@ inline bool read_mesh_from_file(char* filename,
 		{
 			unsigned tex;
 			if (curLine.find('/') != std::string::npos)
-				sscanf_s(curLine.c_str(), "f %d/%d %d/%d %d/%d", &vtxIdx[0], &tex, &vtxIdx[1], &tex, &vtxIdx[2], &tex);
+				sscanf(curLine.c_str(), "f %d/%d %d/%d %d/%d", &vtxIdx[0], &tex, &vtxIdx[1], &tex, &vtxIdx[2], &tex);
 			else
-				sscanf_s(curLine.c_str(), "f %d %d %d", &vtxIdx[0], &vtxIdx[1], &vtxIdx[2]);
+				sscanf(curLine.c_str(), "f %d %d %d", &vtxIdx[0], &vtxIdx[1], &vtxIdx[2]);
 			
 			vtxIdx[0] = realIndex[vtxIdx[0]-1];
 			vtxIdx[1] = realIndex[vtxIdx[1]-1];
