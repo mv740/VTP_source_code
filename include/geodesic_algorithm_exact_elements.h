@@ -70,7 +70,7 @@ namespace geodesic {
 	class IntervalList						//list of the of intervals of the given edge
 	{
 	public:
-		IntervalList() {  m_start = nullptr; m_edge = nullptr; m_sp = -1; m_begin = m_end = nullptr; }
+		IntervalList() { m_start = nullptr; m_edge = nullptr; m_sp = -1; m_begin = m_end = nullptr; }
 		~IntervalList() {};
 
 		void clear() { m_begin = m_end = nullptr; }

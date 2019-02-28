@@ -73,8 +73,9 @@ namespace geodesic {
 		assert(m_vertex_queue.count(v) <= 1);
 
 		std::multiset<vertex_pointer, Vertex>::iterator it = m_vertex_queue.find(v);
-		if (it != m_vertex_queue.end())
+		if (it != m_vertex_queue.end()) {
 			m_vertex_queue.erase(it);
+		}
 	}
 
 	inline void GeodesicAlgorithmExact::create_pseudo_source_windows(vertex_pointer &pseudo_source, bool inside_traversed_area)
@@ -91,8 +92,9 @@ namespace geodesic {
 				m_vertex_queue.erase(vert_it);
 
 				vert_it->geodesic_distance() = distance;
-				if (vert_it->state() == Vertex::OUTSIDE)
+				if (vert_it->state() == Vertex::OUTSIDE) {
 					vert_it->state() = Vertex::FRONT;
+				}
 
 				vert_it->incident_face() = edge_it->adjacent_faces()[0];
 				edge_pointer next_edge = vert_it->incident_face()->next_edge(edge_it, pseudo_source);
@@ -124,13 +126,15 @@ namespace geodesic {
 			list->push_back(candidate);
 
 			// push into M_LIST_QUEUE if inside traversed area
-			if ((inside_traversed_area) && ((edge_it->v0()->state() != Vertex::FRONT) || (edge_it->v1()->state() != Vertex::FRONT)))
+			if ((inside_traversed_area) && ((edge_it->v0()->state() != Vertex::FRONT) || (edge_it->v1()->state() != Vertex::FRONT))) {
 				m_list_queue.push(list);
+			}
 
 			// Statistics
 			++m_windows_wavefront;
-			if (m_windows_peak < m_windows_wavefront)
+			if (m_windows_peak < m_windows_wavefront) {
 				m_windows_peak = m_windows_wavefront;
+			}
 
 		}
 	}
@@ -198,12 +202,17 @@ namespace geodesic {
 		// update top_vertex and M_VERTEX_QUEUE
 		if (top_t.geodesic_distance() < Tri.top_vertex->geodesic_distance())
 		{
-			if (Tri.top_vertex->state() == Vertex::FRONT) erase_from_queue(Tri.top_vertex);
+			if (Tri.top_vertex->state() == Vertex::FRONT) {
+				erase_from_queue(Tri.top_vertex);
+			}
 			std::memcpy(Tri.top_vertex, &top_t, sizeof(Vertex));
-			if (Tri.top_vertex->state() == Vertex::FRONT) m_vertex_queue.insert(Tri.top_vertex);
+			if (Tri.top_vertex->state() == Vertex::FRONT) {
+				m_vertex_queue.insert(Tri.top_vertex);
+			}
 
-			if ((Tri.top_vertex->state() == Vertex::INSIDE) && (Tri.top_vertex->saddle_or_boundary()))
+			if ((Tri.top_vertex->state() == Vertex::INSIDE) && (Tri.top_vertex->saddle_or_boundary())) {
 				create_pseudo_source_windows(Tri.top_vertex, true); // handle saddle vertex
+			}
 		}
 
 		list->sp() = wlist_sp;
@@ -246,7 +255,7 @@ namespace geodesic {
 				else
 				{
 					direction = PropagationDirection::BOTH;
-				}				
+				}
 			}
 			else if (w->sp() > list->sp() + LOCAL_EPSILON)
 			{
@@ -255,14 +264,14 @@ namespace geodesic {
 
 				// judge the positions of the two windows
 				CalculateIntersectionPoint(list->pseudo_x(), list->pseudo_y(), list->sp(), 0, w->pseudo_x(), w->pseudo_y(), w->start(), 0, Intersect_X, Intersect_Y);
-				if ((w->start() > list->sp())||((Intersect_Y <= 0) && (Intersect_Y >= list->pseudo_y()) && (Intersect_Y >= w->pseudo_y())))
+				if ((w->start() > list->sp()) || ((Intersect_Y <= 0) && (Intersect_Y >= list->pseudo_y()) && (Intersect_Y >= w->pseudo_y())))
 				{
 					direction = PropagationDirection::RIGHT;
 				}
 				else
 				{
 					direction = PropagationDirection::BOTH;
-				}	
+				}
 			}
 			else
 			{
@@ -330,7 +339,7 @@ namespace geodesic {
 				iter = iter_t;
 				break;
 
-			case PropagationDirection:: BOTH:
+			case PropagationDirection::BOTH:
 				right_w = new Interval;
 				std::memcpy(right_w, w, sizeof(Interval));
 
@@ -378,8 +387,9 @@ namespace geodesic {
 					wl_right.push_back(right_w);
 
 					++m_windows_wavefront;
-					if (m_windows_peak < m_windows_wavefront)
+					if (m_windows_peak < m_windows_wavefront) {
 						m_windows_peak = m_windows_wavefront;
+					}
 				}
 				else
 				{
@@ -396,7 +406,9 @@ namespace geodesic {
 	//----------------- pairwise windows checking (Rule 2) ----------------------
 	inline void GeodesicAlgorithmExact::check_with_vertices(list_pointer &list)
 	{
-		if (list->empty()) return;
+		if (list->empty()) {
+			return;
+		}
 
 		interval_pointer iter = list->begin();
 		interval_pointer iter_t;
@@ -412,12 +424,14 @@ namespace geodesic {
 			double d1 = GEODESIC_INF;
 
 			d1 = w->d() + sqrt((w->stop() - w->pseudo_x()) * (w->stop() - w->pseudo_x()) + w->pseudo_y() * w->pseudo_y());
-			if (v1->geodesic_distance() + w->stop() < d1)
+			if (v1->geodesic_distance() + w->stop() < d1) {
 				w_survive = false;
+			}
 
 			d1 = w->d() + sqrt((w->start() - w->pseudo_x()) * (w->start() - w->pseudo_x()) + w->pseudo_y() * w->pseudo_y());
-			if (v2->geodesic_distance() + e->length() - w->start() < d1)
+			if (v2->geodesic_distance() + e->length() - w->start() < d1) {
 				w_survive = false;
+			}
 
 
 			iter_t = iter;
@@ -450,10 +464,12 @@ namespace geodesic {
 				d1 = w1->d() + sqrt((w1->start() - w1->pseudo_x()) * (w1->start() - w1->pseudo_x()) + (w1->pseudo_y()) * (w1->pseudo_y()));
 				d2 = w2->d() + sqrt((w1->start() - w2->pseudo_x()) * (w1->start() - w2->pseudo_x()) + (w2->pseudo_y()) * (w2->pseudo_y()));
 
-				if (d2 < d1 * NUMERCIAL_EPSILON)
+				if (d2 < d1 * NUMERCIAL_EPSILON) {
 					return w1_invalid;
-				if (d1 < d2 * NUMERCIAL_EPSILON)
+				}
+				if (d1 < d2 * NUMERCIAL_EPSILON) {
 					w2->start() = w1->start();
+				}
 			}
 		}
 
@@ -470,10 +486,12 @@ namespace geodesic {
 				d1 = w1->d() + sqrt((w1->stop() - w1->pseudo_x()) * (w1->stop() - w1->pseudo_x()) + (w1->pseudo_y()) * (w1->pseudo_y()));
 				d2 = w2->d() + sqrt((w1->stop() - w2->pseudo_x()) * (w1->stop() - w2->pseudo_x()) + (w2->pseudo_y()) * (w2->pseudo_y()));
 
-				if (d2 < d1 * NUMERCIAL_EPSILON)
+				if (d2 < d1 * NUMERCIAL_EPSILON) {
 					return w1_invalid;
-				if (d1 < d2 * NUMERCIAL_EPSILON)
+				}
+				if (d1 < d2 * NUMERCIAL_EPSILON) {
 					w2->stop() = w1->stop();
+				}
 			}
 		}
 
@@ -490,10 +508,12 @@ namespace geodesic {
 				d1 = w1->d() + sqrt((w2->start() - w1->pseudo_x()) * (w2->start() - w1->pseudo_x()) + (w1->pseudo_y()) * (w1->pseudo_y()));
 				d2 = w2->d() + sqrt((w2->start() - w2->pseudo_x()) * (w2->start() - w2->pseudo_x()) + (w2->pseudo_y()) * (w2->pseudo_y()));
 
-				if (d1 < d2 * NUMERCIAL_EPSILON)
+				if (d1 < d2 * NUMERCIAL_EPSILON) {
 					return w2_invalid;
-				if (d2 < d1 * NUMERCIAL_EPSILON)
+				}
+				if (d2 < d1 * NUMERCIAL_EPSILON) {
 					w1->start() = w2->start();
+				}
 			}
 		}
 
@@ -510,10 +530,12 @@ namespace geodesic {
 				d1 = w1->d() + sqrt((w2->stop() - w1->pseudo_x()) * (w2->stop() - w1->pseudo_x()) + (w1->pseudo_y()) * (w1->pseudo_y()));
 				d2 = w2->d() + sqrt((w2->stop() - w2->pseudo_x()) * (w2->stop() - w2->pseudo_x()) + (w2->pseudo_y()) * (w2->pseudo_y()));
 
-				if (d1 < d2 * NUMERCIAL_EPSILON)
+				if (d1 < d2 * NUMERCIAL_EPSILON) {
 					return w2_invalid;
-				if (d2 < d1 * NUMERCIAL_EPSILON)
+				}
+				if (d2 < d1 * NUMERCIAL_EPSILON) {
 					w1->stop() = w2->stop();
+				}
 			}
 		}
 
@@ -537,10 +559,12 @@ namespace geodesic {
 				d1 = w1->d() + sqrt((Intersect_X - w1->pseudo_x()) * (Intersect_X - w1->pseudo_x()) + (Intersect_Y - w1->pseudo_y()) * (Intersect_Y - w1->pseudo_y()));
 				d2 = w2->d() + sqrt((Intersect_X - w2->pseudo_x()) * (Intersect_X - w2->pseudo_x()) + (Intersect_Y - w2->pseudo_y()) * (Intersect_Y - w2->pseudo_y()));
 
-				if (d1 < d2 * NUMERCIAL_EPSILON)
+				if (d1 < d2 * NUMERCIAL_EPSILON) {
 					return w2_invalid;
-				if (d2 < d1 * NUMERCIAL_EPSILON)
+				}
+				if (d2 < d1 * NUMERCIAL_EPSILON) {
 					return w1_invalid;
+				}
 			}
 		}
 
@@ -564,10 +588,12 @@ namespace geodesic {
 				d1 = w1->d() + sqrt((Intersect_X - w1->pseudo_x()) * (Intersect_X - w1->pseudo_x()) + (Intersect_Y - w1->pseudo_y()) * (Intersect_Y - w1->pseudo_y()));
 				d2 = w2->d() + sqrt((Intersect_X - w2->pseudo_x()) * (Intersect_X - w2->pseudo_x()) + (Intersect_Y - w2->pseudo_y()) * (Intersect_Y - w2->pseudo_y()));
 
-				if (d1 < d2 - NUMERCIAL_EPSILON)
+				if (d1 < d2 - NUMERCIAL_EPSILON) {
 					return w2_invalid;
-				if (d2 < d1 - NUMERCIAL_EPSILON)
+				}
+				if (d2 < d1 - NUMERCIAL_EPSILON) {
 					return w1_invalid;
+				}
 			}
 		}
 
@@ -576,7 +602,9 @@ namespace geodesic {
 
 	inline void GeodesicAlgorithmExact::pairwise_windows_checking(list_pointer &list)
 	{
-		if (list->empty()) return;
+		if (list->empty()) {
+			return;
+		}
 
 		interval_pointer iter = list->begin();
 		interval_pointer next, iter_t;
@@ -627,7 +655,9 @@ namespace geodesic {
 	//------------------------- main operation ----------------------------
 	inline void GeodesicAlgorithmExact::propagate_one_windows_list(list_pointer &list)
 	{
-		if (list->empty()) return;
+		if (list->empty()) {
+			return;
+		}
 
 		if (list->edge()->adjacent_faces().size() > 1)
 		{
@@ -662,18 +692,26 @@ namespace geodesic {
 			for (unsigned i = 0; i < vert->adjacent_edges().size(); ++i)
 			{
 				vertex_pointer vert_it = vert->adjacent_edges()[i]->opposite_vertex(vert);
-				if (vert_it->state() == Vertex::OUTSIDE) vert_it->state() = Vertex::FRONT;
+				if (vert_it->state() == Vertex::OUTSIDE) {
+					vert_it->state() = Vertex::FRONT;
+				}
 			}
 
 			// (3) handle saddle vertex
-			if (vert->saddle_or_boundary()) create_pseudo_source_windows(vert, false);
+			if (vert->saddle_or_boundary()) {
+				create_pseudo_source_windows(vert, false);
+			}
 
 			// (4) push window lists on the wavefront incident to v into M_LIST_QUEUE
 			for (unsigned i = 0; i < vert->adjacent_edges().size(); ++i)
 			{
 				edge_pointer edge_it = vert->adjacent_edges()[i];
-				if (!interval_list_0(edge_it)->empty()) m_list_queue.push(interval_list_0(edge_it));
-				if (!interval_list_1(edge_it)->empty()) m_list_queue.push(interval_list_1(edge_it));
+				if (!interval_list_0(edge_it)->empty()) {
+					m_list_queue.push(interval_list_0(edge_it));
+				}
+				if (!interval_list_1(edge_it)->empty()) {
+					m_list_queue.push(interval_list_1(edge_it));
+				}
 			}
 
 			for (unsigned i = 0; i < vert->adjacent_faces().size(); ++i)
@@ -682,8 +720,12 @@ namespace geodesic {
 				vertex_pointer vert_it = (edge_it->adjacent_faces().size() < 2) ? nullptr : edge_it->opposite_face(vert->adjacent_faces()[i])->opposite_vertex(edge_it);
 				if (edge_it->adjacent_faces().size() < 2 || vert_it->state() != Vertex::OUTSIDE)
 				{
-					if (!interval_list_0(edge_it)->empty()) m_list_queue.push(interval_list_0(edge_it));
-					if (!interval_list_1(edge_it)->empty()) m_list_queue.push(interval_list_1(edge_it));
+					if (!interval_list_0(edge_it)->empty()) {
+						m_list_queue.push(interval_list_0(edge_it));
+					}
+					if (!interval_list_1(edge_it)->empty()) {
+						m_list_queue.push(interval_list_1(edge_it));
+					}
 				}
 			}
 
@@ -719,8 +761,9 @@ namespace geodesic {
 						}
 
 						// push updated list into M_LIST_QUEUE
-						if (((Tri.left_edge->v0()->state() == Vertex::INSIDE) || (Tri.left_edge->v1()->state() == Vertex::INSIDE)) && (!Tri.left_list->empty()))
+						if (((Tri.left_edge->v0()->state() == Vertex::INSIDE) || (Tri.left_edge->v1()->state() == Vertex::INSIDE)) && (!Tri.left_list->empty())) {
 							m_list_queue.push(Tri.left_list);
+						}
 					}
 
 					if (!wl_right.empty())
@@ -739,8 +782,9 @@ namespace geodesic {
 						}
 
 						// push updated list into M_LIST_QUEUE
-						if (((Tri.right_edge->v0()->state() == Vertex::INSIDE) || (Tri.right_edge->v1()->state() == Vertex::INSIDE)) && (!Tri.right_list->empty()))
+						if (((Tri.right_edge->v0()->state() == Vertex::INSIDE) || (Tri.right_edge->v1()->state() == Vertex::INSIDE)) && (!Tri.right_list->empty())) {
 							m_list_queue.push(Tri.right_list);
+						}
 					}
 				}
 
@@ -748,8 +792,9 @@ namespace geodesic {
 			}
 
 			// statistics
-			if (m_vertex_queue.size() > m_queue_max_size)
+			if (m_vertex_queue.size() > m_queue_max_size) {
 				m_queue_max_size = m_vertex_queue.size();
+			}
 		}
 
 		clock_t stop = clock();

@@ -57,7 +57,8 @@ inline bool read_mesh_from_file(char* filename,
 {
 	std::ifstream file(filename);
 	assert(file.is_open());
-	if(!file.is_open()) return false;
+	if(!file.is_open()) { return false;
+}
 
 	char type;
 	std::string curLine;
@@ -68,7 +69,8 @@ inline bool read_mesh_from_file(char* filename,
 
 	while(getline(file, curLine))
 	{
-		if (curLine.size() < 2) continue;
+		if (curLine.size() < 2) { continue;
+}
 		if (curLine[0] == 'v' && curLine[1] != 't')
 		{
 			std::map<std::string, int>::iterator pos = mapForDuplicate.find(curLine);
@@ -78,7 +80,8 @@ inline bool read_mesh_from_file(char* filename,
 				realIndex.push_back(oldSize);
 				mapForDuplicate[curLine] = oldSize;
 				sscanf(curLine.c_str(), "v %lf %lf %lf", &coord[0], &coord[1], &coord[2]);
-				for (int i = 0;i < 3;++i) points.push_back(coord[i]);
+				for (int i = 0;i < 3;++i) { points.push_back(coord[i]);
+}
 			}
 			else
 			{
@@ -89,17 +92,20 @@ inline bool read_mesh_from_file(char* filename,
 		else if (curLine[0] == 'f')
 		{
 			unsigned tex;
-			if (curLine.find('/') != std::string::npos)
+			if (curLine.find('/') != std::string::npos) {
 				sscanf(curLine.c_str(), "f %d/%d %d/%d %d/%d", &vtxIdx[0], &tex, &vtxIdx[1], &tex, &vtxIdx[2], &tex);
-			else
+			} else {
 				sscanf(curLine.c_str(), "f %d %d %d", &vtxIdx[0], &vtxIdx[1], &vtxIdx[2]);
+}
 			
 			vtxIdx[0] = realIndex[vtxIdx[0]-1];
 			vtxIdx[1] = realIndex[vtxIdx[1]-1];
 			vtxIdx[2] = realIndex[vtxIdx[2]-1];
-			if (vtxIdx[0] == vtxIdx[1] || vtxIdx[0] == vtxIdx[2] || vtxIdx[1] == vtxIdx[2]) continue;
+			if (vtxIdx[0] == vtxIdx[1] || vtxIdx[0] == vtxIdx[2] || vtxIdx[1] == vtxIdx[2]) { continue;
+}
 
-			for (int i = 0;i < 3;++i) faces.push_back(vtxIdx[i]);
+			for (int i = 0;i < 3;++i) { faces.push_back(vtxIdx[i]);
+}
 		}
 	}
 	file.close();
