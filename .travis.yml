@@ -1,0 +1,35 @@
+language: cpp
+dist: trusty
+
+addons:
+  apt:
+    sources:
+    # Clang 7:
+      - llvm-toolchain-trusty-7
+      - ubuntu-toolchain-r-test
+    packages:
+      - clang-7
+      - cmake
+
+compiler: clang
+
+env:
+  - CMAKE_CXX_COMPILER=clang++-7 CMAKE_C_COMPILER=clang-7
+
+before_install:
+    - export CXX=${CMAKE_CXX_COMPILER}
+    - export CC=${CMAKE_C_COMPILER}
+
+
+#script to run before build
+before_script:
+  - mkdir build
+  - cd build
+  - $CXX --version
+  - $CC --version
+  - cmake -DBUILD_TESTING=ON ..
+
+# build app, and run tests (ie make & make test)
+script: 
+  - cmake --build .
+  - ctest --verbose

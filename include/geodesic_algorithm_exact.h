@@ -145,7 +145,7 @@ namespace geodesic {
 		double top_y = L * sin(Tri.left_alpha);
 
 		Vertex top_t; // temporary top_vertex
-		memcpy(&top_t, Tri.top_vertex, sizeof(Vertex));
+		std::memcpy(&top_t, Tri.top_vertex, sizeof(Vertex));
 		top_t.geodesic_distance() = GEODESIC_INF;
 
 		interval_pointer iter = list->begin();
@@ -154,7 +154,7 @@ namespace geodesic {
 		double wlist_pseudo_x = 0;
 		double wlist_pseudo_y = 0;
 
-		while (iter != NULL)
+		while (iter != nullptr)
 		{
 			interval_pointer &w = iter;
 
@@ -199,7 +199,7 @@ namespace geodesic {
 		if (top_t.geodesic_distance() < Tri.top_vertex->geodesic_distance())
 		{
 			if (Tri.top_vertex->state() == Vertex::FRONT) erase_from_queue(Tri.top_vertex);
-			memcpy(Tri.top_vertex, &top_t, sizeof(Vertex));
+			std::memcpy(Tri.top_vertex, &top_t, sizeof(Vertex));
 			if (Tri.top_vertex->state() == Vertex::FRONT) m_vertex_queue.insert(Tri.top_vertex);
 
 			if ((Tri.top_vertex->state() == Vertex::INSIDE) && (Tri.top_vertex->saddle_or_boundary()))
@@ -227,7 +227,7 @@ namespace geodesic {
 
 		PropagationDirection direction;
 
-		while (!list->empty() && (iter != NULL))
+		while (!list->empty() && (iter != nullptr))
 		{
 			interval_pointer &w = iter;
 			assert(w->start() <= w->stop());
@@ -332,7 +332,7 @@ namespace geodesic {
 
 			case PropagationDirection:: BOTH:
 				right_w = new Interval;
-				memcpy(right_w, w, sizeof(Interval));
+				std::memcpy(right_w, w, sizeof(Interval));
 
 				ValidPropagation = compute_propagated_parameters(w->pseudo_x(),
 					w->pseudo_y(),
@@ -401,7 +401,7 @@ namespace geodesic {
 		interval_pointer iter = list->begin();
 		interval_pointer iter_t;
 
-		while ((!list->empty()) && (iter != NULL))
+		while ((!list->empty()) && (iter != nullptr))
 		{
 			interval_pointer &w = iter;
 			bool w_survive = true;
@@ -584,7 +584,7 @@ namespace geodesic {
 		next = iter->next();
 
 		// traverse successive pairs of windows
-		while ((!list->empty()) && (next != NULL))
+		while ((!list->empty()) && (next != nullptr))
 		{
 			windows_state ws = check_between_two_windows(iter, next);
 
@@ -679,7 +679,7 @@ namespace geodesic {
 			for (unsigned i = 0; i < vert->adjacent_faces().size(); ++i)
 			{
 				edge_pointer   edge_it = vert->adjacent_faces()[i]->opposite_edge(vert);
-				vertex_pointer vert_it = (edge_it->adjacent_faces().size() < 2) ? NULL : edge_it->opposite_face(vert->adjacent_faces()[i])->opposite_vertex(edge_it);
+				vertex_pointer vert_it = (edge_it->adjacent_faces().size() < 2) ? nullptr : edge_it->opposite_face(vert->adjacent_faces()[i])->opposite_vertex(edge_it);
 				if (edge_it->adjacent_faces().size() < 2 || vert_it->state() != Vertex::OUTSIDE)
 				{
 					if (!interval_list_0(edge_it)->empty()) m_list_queue.push(interval_list_0(edge_it));
