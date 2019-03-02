@@ -20,8 +20,8 @@ foreach(file ${test_input_files})
         -s 0
     )
 
+    get_filename_component(FileName ${file} NAME_WE)
     if(Export_Test_GeodesicDistanceFile)
-        get_filename_component(FileName ${file} NAME_WE)
         get_filename_component(FilePath ${file} PATH)
         set(GEODESIC_OUTPUT_FILE "${FilePath}/${FileName}.txt")
 
@@ -32,7 +32,9 @@ foreach(file ${test_input_files})
         message(${TEST_ARGS})
     endif()
 
-    add_test(NAME "${test_default_name}_default"
+    Set(Test_Name ${test_default_name}_${FileName})
+
+    add_test(NAME ${Test_Name}
         COMMAND ${PROJECT_NAME} ${TEST_ARGS}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
